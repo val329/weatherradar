@@ -216,5 +216,5 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
-db/weather.db
-scraped_weather.csv
+# db/weather.db
+# scraped_weather.csv
