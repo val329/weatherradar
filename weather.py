@@ -35,7 +35,7 @@ def format_text_to_datetime(series):
 ## ---------------------------------------------------------------##
 
 # loading data from CSV file into a dataframe
-df = pd.read_csv("scraped_data.csv", header=0)
+df = pd.read_csv("scraped_weather.csv", header=0)
 df_cleaned = df.copy()
 
 
@@ -145,7 +145,7 @@ def add_weather_observation(cursor, city, date, temp, temp_scale, wtype=0, wdesc
 
 
 # connect to a new SQLite database
-with sqlite3.connect("db/school.db") as conn:
+with sqlite3.connect("db/weather.db") as conn:
     conn.execute("PRAGMA foreign_keys = 1")
     cursor = conn.cursor()
 
@@ -177,7 +177,8 @@ with sqlite3.connect("db/school.db") as conn:
     
     # transforming the dataframe to load into database table (drop columns, reorder columns, remove duplicated rows)
     df_cleaned_merge.drop(columns=['City', 'Local time'], axis=1, inplace=True)
-    df_cleaned_merge = df_cleaned_merge.reindex(columns=['city_id', 'date_id', 'Temperature', 'Temperature scale', 'Description'])  #reordering columns                                      
+    df_cleaned_merge = df_cleaned_merge.rename(columns={'Temperature': 'temp', 'Temperature scale': 'temp_scale', 'Description': 'description'})
+    df_cleaned_merge = df_cleaned_merge.reindex(columns=['city_id', 'date_id', 'temp', 'temp_scale', 'description'])  #reordering columns                                      
     df_cleaned_merge = df_cleaned_merge.drop_duplicates(subset=['city_id','date_id'])
     
     # adding data to fact_weather_observation from a cleaned dataframe
