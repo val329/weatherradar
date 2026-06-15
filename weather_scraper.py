@@ -116,7 +116,7 @@ if table_rows:
 
 
 export_to_csv(
-    "scraped_data",
+    "scraped_weather",
     ["City", "Local time", "Description", "Temperature", "UTC time"],
     results,
 )
